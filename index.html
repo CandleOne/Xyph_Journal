@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xyph Journal</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
   </head>
   <body>
     <h1>Welcome To Xyph Journal</h1>
     <h2>A simple, open source, text editing tool.</h2>
 
-    <div>
-      <textarea id="note-text" rows="10" cols="50"></textarea>
-    </div>
+    <div id="editor"></div>
 
     <div id="button-container">
       <button id="save-text-file-button">Save as Text File</button>
@@ -26,22 +25,7 @@
     
     <p id="word-counter">Words: 0 | Characters: 0</p>
 
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="scripts.js"></script>
-    <script>
-      const editor = new Quill('#editor-container', {
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['link', 'image'],
-            ['clean']
-          ]
-        },
-        theme: 'snow'
-      });
-      
-
+    <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="scripts.js"></script>
 
@@ -54,8 +38,11 @@
     text-align: center;
     padding: 10px;">Copyright &copy; 2023 Xyph Journal designed by Maurice Pugh</div>
 
-
-
+    <script>
+      const quill = new Quill('#editor', {
+        theme: 'snow'
+      });
+    </script>
   </body>
 </html>
 

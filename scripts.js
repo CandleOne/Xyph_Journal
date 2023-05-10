@@ -16,6 +16,11 @@ nightModeToggle.addEventListener('click', () => {
     fileInput.click();
   });
 
+  const quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+  
+
   fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
