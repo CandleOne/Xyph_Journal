@@ -24,6 +24,10 @@ body {
     width: 90%;
   }
   
+  #button-container {
+    text-align: center;
+  }
+  
   button {
     background-color: #444;
     border: none;
@@ -35,6 +39,7 @@ body {
     cursor: pointer;
     display: inline-block;
     margin: 5px;
+    width: 160px;
   }
   
   button:hover {
@@ -65,15 +70,15 @@ body {
   body:not(.night-mode) {
     background-color: #f0f0f0;
     color: #222;
-  }
-  
-  body:not(.night-mode) textarea {
-    background-color: #fff;
-    color: #222;
-  }
-  
-  body:not(.night-mode) button {
-    background-color: #f0f0f0;
-    color: #222;
-  }
+}
+
+body:not(.night-mode) textarea {
+  background-color: #fff;
+  color: #222;
+}
+
+body:not(.night-mode) button {
+  background-color: #f0f0f0;
+  color: #222;
+}
   
