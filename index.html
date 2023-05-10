@@ -12,7 +12,7 @@
     <h2>A simple, open source, text editing tool.</h2>
     
     <div>
-      <textarea id="note-text" rows="10" cols="50"></textarea>
+      <div id="note-text"></div>
     </div>
 
     <div id="button-container">
@@ -41,6 +41,35 @@
     color: #ffffff;
     text-align: center;
     padding: 10px;">Copyright &copy; 2023 Xyph Journal designed by Maurice Pugh</div>
+
+    <script>
+      var quill = new Quill('#note-text', {
+        theme: 'snow'
+      });
+
+      quill.on('text-change', function(delta, oldDelta, source) {
+        updateWordCount();
+        var text = quill.getText();
+        if (text.length > 0) {
+          document.getElementById('save-text-file-button').disabled = false;
+          document.getElementById('save-image-button').disabled = false;
+          document.getElementById('text-to-speech-button').disabled = false;
+          document.getElementById('save-pdf-button').disabled = false;
+        } else {
+          document.getElementById('save-text-file-button').disabled = true;
+          document.getElementById('save-image-button').disabled = true;
+          document.getElementById('text-to-speech-button').disabled = true;
+          document.getElementById('save-pdf-button').disabled = true;
+        }
+      });
+
+      function updateWordCount() {
+        var text = quill.getText();
+        var words = text.split(/\s+/).length;
+        var characters = text.length;
+        document.getElementById('word-counter').innerHTML = 'Words: ' + words + ' | Characters: ' + characters;
+      }
+    </script>
 
   </body>
 </html>
