@@ -73,19 +73,25 @@ saveImageButton.addEventListener('click', () => {
   if (fileName !== null) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = noteEditor.clientWidth;
-    canvas.height = noteEditor.clientHeight;
-    context.font = getComputedStyle(noteEditor).font;
-    context.fillText(quill.root.innerHTML, 0, 20);
-    const dataUrl = canvas.toDataURL();
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = `${fileName}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const noteEditorBounds = noteEditor.getBoundingClientRect();
+    canvas.width = noteEditorBounds.width;
+    canvas.height = noteEditorBounds.height;
+    const data = quill.root.innerHTML;
+    const image = new Image();
+    image.onload = () => {
+      context.drawImage(image, 0, 0);
+      const dataUrl = canvas.toDataURL();
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `${fileName}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    image.src = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="' + noteEditorBounds.width + '" height="' + noteEditorBounds.height + '">' + '<foreignObject width="100%" height="100%">' + data + '</foreignObject>' + '</svg>');
   }
 });
+
 
 
 
