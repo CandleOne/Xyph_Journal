@@ -11,9 +11,7 @@
     <h1>Welcome To Xyph Journal</h1>
     <h2>A simple, open source, text editing tool.</h2>
     
-    <div>
-      <textarea id="note-text" rows="10" cols="50"></textarea>
-    </div>
+    <div id="editor-container"></div>
 
     <div id="button-container">
       <button id="save-text-file-button">Save as Text File</button>
@@ -42,5 +40,33 @@
     text-align: center;
     padding: 10px;">Copyright &copy; 2023 Xyph Journal designed by Maurice Pugh</div>
 
-  </body>
-</html>
+    <script>
+      var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean']                                         // remove formatting button
+          ]
+        }
+      });
+
+      function updateWordCount() {
+        var text = quill.getText();
+        var words = text.split(/\s+/).
+
