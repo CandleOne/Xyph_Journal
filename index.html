@@ -2,101 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Xyph Journal!</title>
-    <style>
-      body {
-        background-color: #222;
-        color: #fff;
-        font-family: Arial, sans-serif;
-      }
-      
-      textarea {
-        background-color: #444;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 16px;
-        box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.3);
-        resize: none;
-      }
-      
-      button {
-        background-color: #444;
-        border: none;
-        color: #fff;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 16px;
-        box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-      }
-      
-      button:hover {
-        background-color: #666;
-        box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.5);
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xyph Journal</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1 style="text-align: center;">Welcome To Xyph Journal</h1>
-    <h2 style="text-align: center;">A simple, open source, text editing tool.</h2>
+    <h1>Welcome To Xyph Journal</h1>
+    <h2>A simple, open source, text editing tool.</h2>
 
-
-    <div style="text-align: center;">
+    <div>
       <textarea id="note-text" rows="10" cols="50"></textarea>
     </div>
 
-    <div style="text-align: center;">
+    <div>
       <button id="save-text-file-button">Save as Text File</button>
       <button id="save-image-button">Save as Image</button>
+      <button id="text-to-speech-button">Text to Speech</button>
+      <button id="save-pdf-button">Save as PDF</button>
+      <button id="load-file-button">Load File</button>
     </div>
-    <script>
-      const noteText = document.getElementById('note-text');
-      const saveTextFileButton = document.getElementById('save-text-file-button');
-      const saveImageButton = document.getElementById('save-image-button');
+    
+    <p id="word-counter">Words: 0 | Characters: 0</p>
 
-      saveTextFileButton.addEventListener('click', () => {
-        const data = noteText.value;
-        const fileName = prompt('Please enter a file name:');
-        if (fileName !== null) {
-          const a = document.createElement('a');
-          a.href = `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
-          a.download = `${fileName}.txt`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
-      });
-
-      saveImageButton.addEventListener('click', () => {
-        const fileName = prompt('Please enter a file name:');
-        if (fileName !== null) {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.width = noteText.clientWidth;
-          canvas.height = noteText.clientHeight;
-          context.font = getComputedStyle(noteText).font;
-          context.fillText(noteText.value, 0, 20);
-
-          const dataUrl = canvas.toDataURL('image/png');
-          const a = document.createElement('a');
-          a.href = dataUrl;
-          a.download = `${fileName}.png`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
-      });
-    </script>
-    <div id="footer" style="  position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #545454;
-    color: #ffffff;
-    text-align: center;
-    padding: 10px;">Copyright & Copy 2023 Xyph Journal designed by Maurice Pugh</div>
-    <p style="text-align: center;">Find Source Code at: https://github.com/mdp1289/Xyph_Journal</p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
