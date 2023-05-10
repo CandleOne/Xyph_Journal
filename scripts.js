@@ -73,24 +73,70 @@ saveImageButton.addEventListener('click', () => {
   if (fileName !== null) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    const noteEditorBounds = noteEditor.getBoundingClientRect();
-    canvas.width = noteEditorBounds.width;
-    canvas.height = noteEditorBounds.height;
-    const data = quill.root.innerHTML;
-    const image = new Image();
-    image.onload = () => {
-      context.drawImage(image, 0, 0);
-      const dataUrl = canvas.toDataURL();
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = `${fileName}.png`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-    image.src = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="' + noteEditorBounds.width + '" height="' + noteEditorBounds.height + '">' + '<foreignObject width="100%" height="100%">' + data + '</foreignObject>' + '</svg>');
+    const quillInstance = new Quill(noteEditor);
+    const contents = quillInstance.getContents();
+    const text = quillInstance.getText();
+    const font = getComputedStyle(noteEditor).font;
+    const lineHeight = parseInt(getComputedStyle(noteEditor).lineHeight);
+    const lines = text.split('\n');
+    const textHeight = lineHeight * lines.length;
+    const width = noteEditor.clientWidth;
+    const height = textHeight + 20;
+    canvas.width = width;
+    canvas.height = height;
+    context.font = font;
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = '#000';
+    quillInstance.formatText(0, text.length, {
+      color: '#000',
+      font: font
+    });
+    quillInstance.formatLine(0, contents.length - 1, {
+      align: 'left',
+      font: font
+    });
+    quillInstance.formatLine(contents.length - 1, 1, {
+      align: 'center'
+    });
+    quillInstance.formatLine(contents.length - 1, 1, {
+      align: 'center'
+    });
+    quillInstance.formatText(contents.length, 1, {
+      'color': '#000',
+      'font-size': '20px',
+      'line-height': lineHeight + 'px',
+      'font-weight': 'bold'
+    });
+    quillInstance.formatLine(contents.length, 1, {
+      align: 'center'
+    });
+    quillInstance.formatLine(contents.length, 1, {
+      align: 'center'
+    });
+    quillInstance.formatText(0, contents.length, {
+      color: '#000',
+      font: font
+    });
+    quillInstance.formatLine(0, contents.length - 1, {
+      align: 'left',
+      font: font
+    });
+    quillInstance.formatLine(contents.length - 1, 1, {
+      align: 'center'
+    });
+    context.fillText(text, 0, lineHeight + 10);
+    context.fillText(fileName, canvas.width / 2, canvas.height - 10);
+    const dataUrl = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${fileName}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 });
+
 
 
 
