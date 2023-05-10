@@ -64,8 +64,16 @@ saveImageButton.addEventListener('click', () => {
     canvas.height = noteText.clientHeight;
     context.font = getComputedStyle(noteText).font;
     context.fillText(noteText.value, 0, 20);
+    const dataUrl = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${fileName}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 });
+
 
 textToSpeechButton.addEventListener('click', () => {
   const utterance = new SpeechSynthesisUtterance(noteText.value);
