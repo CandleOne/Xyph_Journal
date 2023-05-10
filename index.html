@@ -11,7 +11,10 @@
     <h1>Welcome To Xyph Journal</h1>
     <h2>A simple, open source, text editing tool.</h2>
     
-    <div id="editor-container"></div>
+    <div>
+      <div id="editor"></div>
+      <textarea id="note-text" rows="10" cols="50"></textarea>
+    </div>
 
     <div id="button-container">
       <button id="save-text-file-button">Save as Text File</button>
@@ -26,9 +29,11 @@
     <p id="word-counter">Words: 0 | Characters: 0</p>
 
     <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <script src="scripts.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="scripts.js"></script>
 
     <div id="footer" style="position: fixed;
     left: 0;
@@ -37,105 +42,9 @@
     background-color: #545454;
     color: #ffffff;
     text-align: center;
-    padding: 10px;">Copyright &copy; 2023 Xyph Journal designed by Maurice Pugh
-    </div>
+    padding: 10px;">Copyright &copy; 2023 Xyph Journal designed by Maurice Pugh</div>
 
-    <script>
-// Initialize Quill editor
-var quill = new Quill('#editor', {
-  theme: 'snow'
-});
 
-// Get the note text element
-var noteText = document.getElementById('note-text');
-
-// Update note text element on editor change
-quill.on('text-change', function(delta, oldDelta, source) {
-  noteText.value = quill.root.innerHTML;
-  updateWordCount();
-});
-
-// Update editor on note text change
-noteText.addEventListener('input', function() {
-  quill.root.innerHTML = noteText.value;
-  updateWordCount();
-});
-
-// Function to update word and character count
-function updateWordCount() {
-  var text = quill.getText();
-  var words = text.trim().length ? text.trim().split(/\s+/).length : 0;
-  var characters = text.length;
-  document.getElementById('word-counter').innerHTML = 'Words: ' + words + ' | Characters: ' + characters;
-}
-
-// Save note as text file
-var saveTextFileButton = document.getElementById('save-text-file-button');
-saveTextFileButton.addEventListener('click', function() {
-  var textToSave = noteText.value;
-  var hiddenElement = document.createElement('a');
-  hiddenElement.href = 'data:attachment/text,' + encodeURI(textToSave);
-  hiddenElement.target = '_blank';
-  hiddenElement.download = 'xyph-note.txt';
-  hiddenElement.click();
-});
-
-// Save note as image
-var saveImageButton = document.getElementById('save-image-button');
-saveImageButton.addEventListener('click', function() {
-  domtoimage.toBlob(document.getElementById('editor'))
-    .then(function(blob) {
-      window.saveAs(blob, 'xyph-note.png');
-    });
-});
-
-// Convert text to speech
-var textToSpeechButton = document.getElementById('text-to-speech-button');
-textToSpeechButton.addEventListener('click', function() {
-  var textToSpeak = noteText.value;
-  var utterance = new SpeechSynthesisUtterance(textToSpeak);
-  window.speechSynthesis.speak(utterance);
-});
-
-// Save note as PDF
-var savePdfButton = document.getElementById('save-pdf-button');
-savePdfButton.addEventListener('click', function() {
-  var pdf = new jsPDF();
-  pdf.fromHTML(document.getElementById('editor'));
-  pdf.save('xyph-note.pdf');
-});
-
-// Load note from file
-var loadFileButton = document.getElementById('load-file-button');
-loadFileButton.addEventListener('click', function() {
-  document.getElementById('file-input').click();
-});
-
-var fileInput = document.getElementById('file-input');
-fileInput.addEventListener('change', function(e) {
-  var file = fileInput.files[0];
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    noteText.value = e.target.result;
-    quill.root.innerHTML = noteText.value;
-    updateWordCount();
-  };
-  reader.readAsText(file);
-});
-
-// Toggle night mode
-var nightModeToggle = document.getElementById('night-mode-toggle');
-nightModeToggle.addEventListener('click', function() {
-  document.body.classList.toggle('night-mode');
-});
-
-// Initial word count update
-updateWordCount();
-
-    </script>
-
-    
 
   </body>
 </html>
-
