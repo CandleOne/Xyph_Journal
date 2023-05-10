@@ -41,22 +41,100 @@
     </div>
 
     <script>
-      var editor = new Quill('#editor-container', {
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'blockquote', 'code-block'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }],
-            [{ indent: '-1' }, { indent: '+1' }],
-            [{ direction: 'rtl' }, { align: [] }],
-            ['clean']
-          ]
-        },
-        theme: 'snow'
-      });
+// Initialize Quill editor
+var quill = new Quill('#editor', {
+  theme: 'snow'
+});
+
+// Get the note text element
+var noteText = document.getElementById('note-text');
+
+// Update note text element on editor change
+quill.on('text-change', function(delta, oldDelta, source) {
+  noteText.value = quill.root.innerHTML;
+  updateWordCount();
+});
+
+// Update editor on note text change
+noteText.addEventListener('input', function() {
+  quill.root.innerHTML = noteText.value;
+  updateWordCount();
+});
+
+// Function to update word and character count
+function updateWordCount() {
+  var text = quill.getText();
+  var words = text.trim().length ? text.trim().split(/\s+/).length : 0;
+  var characters = text.length;
+  document.getElementById('word-counter').innerHTML = 'Words: ' + words + ' | Characters: ' + characters;
+}
+
+// Save note as text file
+var saveTextFileButton = document.getElementById('save-text-file-button');
+saveTextFileButton.addEventListener('click', function() {
+  var textToSave = noteText.value;
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:attachment/text,' + encodeURI(textToSave);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = 'xyph-note.txt';
+  hiddenElement.click();
+});
+
+// Save note as image
+var saveImageButton = document.getElementById('save-image-button');
+saveImageButton.addEventListener('click', function() {
+  domtoimage.toBlob(document.getElementById('editor'))
+    .then(function(blob) {
+      window.saveAs(blob, 'xyph-note.png');
+    });
+});
+
+// Convert text to speech
+var textToSpeechButton = document.getElementById('text-to-speech-button');
+textToSpeechButton.addEventListener('click', function() {
+  var textToSpeak = noteText.value;
+  var utterance = new SpeechSynthesisUtterance(textToSpeak);
+  window.speechSynthesis.speak(utterance);
+});
+
+// Save note as PDF
+var savePdfButton = document.getElementById('save-pdf-button');
+savePdfButton.addEventListener('click', function() {
+  var pdf = new jsPDF();
+  pdf.fromHTML(document.getElementById('editor'));
+  pdf.save('xyph-note.pdf');
+});
+
+// Load note from file
+var loadFileButton = document.getElementById('load-file-button');
+loadFileButton.addEventListener('click', function() {
+  document.getElementById('file-input').click();
+});
+
+var fileInput = document.getElementById('file-input');
+fileInput.addEventListener('change', function(e) {
+  var file = fileInput.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    noteText.value = e.target.result;
+    quill.root.innerHTML = noteText.value;
+    updateWordCount();
+  };
+  reader.readAsText(file);
+});
+
+// Toggle night mode
+var nightModeToggle = document.getElementById('night-mode-toggle');
+nightModeToggle.addEventListener('click', function() {
+  document.body.classList.toggle('night-mode');
+});
+
+// Initial word count update
+updateWordCount();
+
     </script>
+
+    
 
   </body>
 </html>
