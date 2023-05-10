@@ -16,9 +16,10 @@ nightModeToggle.addEventListener('click', () => {
     fileInput.click();
   });
 
-  const quill = new Quill('#editor', {
+  var quill = new Quill('#note-text', {
     theme: 'snow'
   });
+  
   
 
   fileInput.addEventListener('change', (event) => {
@@ -41,11 +42,13 @@ setInterval(() => {
     localStorage.setItem(localStorageKey, noteText.value);
   }, autosaveInterval);
 
-noteText.addEventListener('input', () => {
-  const words = noteText.value.trim().split(/\s+/).filter(word => word.length > 0).length;
-  const characters = noteText.value.length;
-  wordCounter.textContent = `Words: ${words} | Characters: ${characters}`;
-});
+  function updateWordCount() {
+    var text = quill.getText();
+    var words = text.split(/\s+/).length;
+    var characters = text.length;
+    document.getElementById('word-counter').innerHTML = 'Words: ' + words + ' | Characters: ' + characters;
+  }
+  
 
 saveTextFileButton.addEventListener('click', () => {
   const data = noteText.value;
@@ -94,5 +97,44 @@ savePdfButton.addEventListener('click', () => {
   }
 });
 ``
+quill.on('text-change', function(delta, oldDelta, source) {
+  updateWordCount();
+  var text = quill.getText();
+  if (text.length > 0) {
+    document.getElementById('save-text-file-button').disabled = false;
+    document.getElementById('save-image-button').disabled = false;
+    document.getElementById('text-to-speech-button').disabled = false;
+    document.getElementById('save-pdf-button').disabled = false;
+  } else {
+    document.getElementById('save-text-file-button').disabled = true;
+    document.getElementById('save-image-button').disabled = true;
+    document.getElementById('text-to-speech-button').disabled = true;
+    document.getElementById('save-pdf-button').disabled = true;
+  }
+});
+
+var toolbarOptions = [  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'direction': 'rtl' }],                         // text direction
+
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  [{ 'font': [] }],
+  [{ 'align': [] }],
+
+  ['clean']                                         // remove formatting button
+];
+
+quill.addModule('toolbar', {
+  container: toolbarOptions
+});
+
 
 
