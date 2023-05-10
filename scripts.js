@@ -18,7 +18,11 @@ loadFileButton.addEventListener('click', () => {
 
 const quill = new Quill(noteEditor, {
   modules: {
-    toolbar: '#toolbar'
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['image', 'code-block']
+    ]
   },
   theme: 'snow'
 });
