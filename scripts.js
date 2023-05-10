@@ -56,36 +56,37 @@ function updateWordCount() {
 
 
 saveTextFileButton.addEventListener('click', () => {
-const data = noteText.value;
-const fileName = prompt('Please enter a file name:');
-if (fileName !== null) {
-  const a = document.createElement('a');
-  a.href = `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
-  a.download = `${fileName}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
+  const data = quill.getText();
+  const fileName = prompt('Please enter a file name:');
+  if (fileName !== null) {
+    const a = document.createElement('a');
+    a.href = `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
+    a.download = `${fileName}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 });
 
 saveImageButton.addEventListener('click', () => {
-const fileName = prompt('Please enter a file name:');
-if (fileName !== null) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  canvas.width = noteText.clientWidth;
-  canvas.height = noteText.clientHeight;
-  context.font = getComputedStyle(noteText).font;
-  context.fillText(noteText.value, 0, 20);
-  const dataUrl = canvas.toDataURL();
-  const a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = `${fileName}.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
+  const fileName = prompt('Please enter a file name:');
+  if (fileName !== null) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = noteEditor.clientWidth;
+    canvas.height = noteEditor.clientHeight;
+    context.font = getComputedStyle(noteEditor).font;
+    context.fillText(quill.root.innerHTML, 0, 20);
+    const dataUrl = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${fileName}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 });
+
 
 
 textToSpeechButton.addEventListener('click', () => {
