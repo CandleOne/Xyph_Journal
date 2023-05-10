@@ -47,3 +47,33 @@ body {
     padding: 10px;
   }
   
+  body.night-mode {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  body.night-mode textarea {
+    background-color: #444;
+    color: #fff;
+  }
+  
+  body.night-mode button {
+    background-color: #444;
+    color: #fff;
+  }
+  
+  body:not(.night-mode) {
+    background-color: #f0f0f0;
+    color: #222;
+  }
+  
+  body:not(.night-mode) textarea {
+    background-color: #fff;
+    color: #222;
+  }
+  
+  body:not(.night-mode) button {
+    background-color: #f0f0f0;
+    color: #222;
+  }
+  

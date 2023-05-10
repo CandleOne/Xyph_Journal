@@ -1,3 +1,5 @@
+const nightModeToggle = document.getElementById('night-mode-toggle');
+const fileInput = document.getElementById('file-input');
 const noteText = document.getElementById('note-text');
 const saveTextFileButton = document.getElementById('save-text-file-button');
 const saveImageButton = document.getElementById('save-image-button');
@@ -5,6 +7,34 @@ const textToSpeechButton = document.getElementById('text-to-speech-button');
 const savePdfButton = document.getElementById('save-pdf-button');
 const loadFileButton = document.getElementById('load-file-button');
 const wordCounter = document.getElementById('word-counter');
+
+nightModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('night-mode');
+  });
+
+  loadFileButton.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        noteText.value = e.target.result;
+      };
+      reader.readAsText(file);
+    }
+  });
+
+  const autosaveInterval = 30000; // 30 seconds
+const localStorageKey = 'xyph-journal-autosave';
+
+noteText.value = localStorage.getItem(localStorageKey) || '';
+
+setInterval(() => {
+    localStorage.setItem(localStorageKey, noteText.value);
+  }, autosaveInterval);
 
 noteText.addEventListener('input', () => {
   const words = noteText.value.trim().split(/\s+/).filter(word => word.length > 0).length;
