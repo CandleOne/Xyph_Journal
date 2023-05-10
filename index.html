@@ -26,6 +26,22 @@
     
     <p id="word-counter">Words: 0 | Characters: 0</p>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="scripts.js"></script>
+    <script>
+      const editor = new Quill('#editor-container', {
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+          ]
+        },
+        theme: 'snow'
+      });
+      
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="scripts.js"></script>
 
