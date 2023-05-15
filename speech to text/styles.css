@@ -7,3 +7,8 @@ textarea {
     width: 80%;
     margin-top: 10px;
 }
+
+button.listening {
+    background-color: #007BFF;
+    color: white;
+}

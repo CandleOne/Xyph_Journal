@@ -11,7 +11,7 @@ startButton.addEventListener("click", () => {
         recognition.onstart = () => {
             startButton.innerText = "Listening...";
             startButton.disabled = true;
-            startButton.style.backgroundColor = "#ccc";
+            startButton.classList.add("listening");
         };
 
         recognition.onresult = (event) => {
@@ -24,7 +24,7 @@ startButton.addEventListener("click", () => {
         recognition.onend = () => {
             startButton.innerText = "Start Listening";
             startButton.disabled = false;
-            startButton.style.backgroundColor = "";
+            startButton.classList.remove("listening");
         };
 
         recognition.start();
