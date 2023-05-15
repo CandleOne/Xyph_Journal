@@ -2,9 +2,11 @@ const startButton = document.getElementById("startButton");
 const voiceInput = document.getElementById("voiceInput");
 const response = document.getElementById("response");
 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
 startButton.addEventListener("click", () => {
-    if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
         recognition.lang = 'en-US';
         recognition.interimResults = false;
 
